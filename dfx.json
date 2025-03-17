@@ -1,0 +1,52 @@
+{
+  "canisters": {
+    "ledger": {
+      "type": "custom",
+      "wasm": "ledger.wasm",
+      "candid": "ledger.private.did"
+    },
+    "marketplace": {
+      "main": "marketplace/main.mo",
+      "type": "motoko"
+    },
+    "dip721": {
+      "main": "ic-nft/src/main.mo",
+      "type": "motoko"
+    },
+    "sharing": {
+      "main": "rentifynft/src/main.mo",
+      "type": "motoko"
+    },
+    "assets": {
+      "dependencies": [
+        "marketplace"
+      ],
+      "frontend": {
+        "entrypoint": "dist/index.html"
+      },
+      "source": [
+        "dist/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "packtool": "mops sources"
+    }
+  },
+  "dfx": "0.18.0",
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    },
+    "ic": {
+      "providers": [
+        "https://mainnet.dfinity.network"
+      ],
+      "type": "persistent"
+    }
+  },
+  "version": 1
+}

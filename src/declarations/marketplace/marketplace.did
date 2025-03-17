@@ -1,0 +1,210 @@
+type UserStatus = 
+ variant {
+   Disable;
+   Enable;
+   Pending;
+ };
+type UserProfile = 
+ record {
+   avatarUri: text;
+   contactInfo: text;
+   createdAt: Timestamp__2;
+   id: UserId;
+   introduction: text;
+   owner: UserPrincipal;
+   status: UserStatus;
+   username: text;
+ };
+type UserPrincipal = principal;
+type UserId = nat64;
+type Tokens = record {e8s: nat64;};
+type Timestamp__2 = int;
+type Timestamp__1 = int;
+type Timestamp = int;
+type Result_3 = 
+ variant {
+   Err: Error;
+   Ok: nat;
+ };
+type Result_2 = 
+ variant {
+   Err: Error;
+   Ok: LendProfile;
+ };
+type Result_1 = 
+ variant {
+   Err: Error;
+   Ok: nat64;
+ };
+type Result = 
+ variant {
+   Err: Error;
+   Ok: bool;
+ };
+type PriceUnit = 
+ record {
+   decimals: nat;
+   symbol: text;
+ };
+type Marketplace = 
+ service {
+   accountId: () -> (blob) query;
+   addNFTCansiter: (principal) -> (bool);
+   allListing: () -> (vec ListingProfile__1) query;
+   canisterBalance: () -> (Tokens);
+   getCanisterPrincipal: () -> (text) query;
+   getLend: (LendIdCommand) -> (Result_2) query;
+   getNFTCansiters: () -> (vec principal) query;
+   getNftCansterId: () -> (text) query;
+   getSelf: () -> (opt UserProfile) query;
+   getSharingNftCansterId: () -> (text) query;
+   getUser: (principal) -> (opt UserProfile) query;
+   healthcheck: () -> (bool) query;
+   listingNFT: (ListingIdCommand) -> (Result_3);
+   notify: (LendIdCommand, nat64) -> (Result_1);
+   pageEnableLend: (nat, nat) -> (LendPage) query;
+   pageListings: (ListingPageQuery) -> (ListingPage) query;
+   pageUserLend: (principal, nat, nat) -> (LendPage) query;
+   preLendNFT: (LendCreateCommand) -> (Result_2);
+   preListingNFT: (ListingCreateCommand) -> (Result_1);
+   redeem: (ListingIdCommand) -> (Result_1);
+   registerUser: () -> (bool);
+   setNftCansterId: (text) -> (Result);
+   setShareNftCansterId: (text) -> (Result);
+ };
+type ListingStatus = 
+ variant {
+   Disable;
+   Enable;
+   Pending;
+   Redeemed;
+ };
+type ListingProfile__1 = 
+ record {
+   availableUtil: Timestamp;
+   canisterId: text;
+   createdAt: Timestamp;
+   desc: text;
+   id: ListingId;
+   name: text;
+   nftId: nat;
+   owner: principal;
+   price: PriceUnit;
+   redeemNftId: opt nat;
+   status: ListingStatus;
+   updatedAt: Timestamp;
+   web: text;
+ };
+type ListingProfile = 
+ record {
+   availableUtil: Timestamp;
+   canisterId: text;
+   createdAt: Timestamp;
+   desc: text;
+   id: ListingId;
+   name: text;
+   nftId: nat;
+   owner: principal;
+   price: PriceUnit;
+   redeemNftId: opt nat;
+   status: ListingStatus;
+   updatedAt: Timestamp;
+   web: text;
+ };
+type ListingPageQuery = 
+ record {
+   pageNum: nat;
+   pageSize: nat;
+   status: ListingStatus;
+   user: opt principal;
+ };
+type ListingPage = 
+ record {
+   data: vec ListingProfile;
+   pageNum: nat;
+   pageSize: nat;
+   totalCount: nat;
+ };
+type ListingIdCommand = record {id: ListingId;};
+type ListingId = nat64;
+type ListingCreateCommand = 
+ record {
+   availableUtil: Timestamp;
+   canisterId: text;
+   desc: text;
+   name: text;
+   nftId: nat;
+   price: PriceUnit;
+   web: text;
+ };
+type LendStatus = 
+ variant {
+   Disable;
+   Enable;
+   Pending;
+ };
+type LendProfile__1 = 
+ record {
+   accountIdentifier: blob;
+   amount: nat64;
+   createdAt: Timestamp__1;
+   end: nat;
+   id: LendId;
+   listingId: nat64;
+   nftOwner: principal;
+   owner: principal;
+   start: nat;
+   status: LendStatus;
+   uNFTId: opt nat;
+   updatedAt: Timestamp__1;
+   web: text;
+ };
+type LendProfile = 
+ record {
+   accountIdentifier: blob;
+   amount: nat64;
+   createdAt: Timestamp__1;
+   end: nat;
+   id: LendId;
+   listingId: nat64;
+   nftOwner: principal;
+   owner: principal;
+   start: nat;
+   status: LendStatus;
+   uNFTId: opt nat;
+   updatedAt: Timestamp__1;
+   web: text;
+ };
+type LendPage = 
+ record {
+   data: vec LendProfile__1;
+   pageNum: nat;
+   pageSize: nat;
+   totalCount: nat;
+ };
+type LendIdCommand = record {id: LendId;};
+type LendId = nat64;
+type LendCreateCommand = 
+ record {
+   end: nat;
+   listingId: nat64;
+   start: nat;
+ };
+type Error = 
+ variant {
+   alreadyExisted;
+   burnFailed: text;
+   idDuplicated;
+   listingLocked;
+   listingNotEnable;
+   listingNotFound;
+   mintFailed;
+   notFound;
+   parameterErr: text;
+   renting;
+   transferFailed: text;
+   unauthorized;
+   understock;
+   unknownError;
+ };
+service : () -> Marketplace
